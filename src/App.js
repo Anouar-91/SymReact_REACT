@@ -4,7 +4,9 @@ import {  Routes, Route, BrowserRouter } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import InvoicePage from "./pages/InvoicePage";
 import LoginPage from './pages/LoginPage';
+import AuthAPI from './services/AuthAPI';
 
+AuthAPI.setup();
 function App() {
   return (
 

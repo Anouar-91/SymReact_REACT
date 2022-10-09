@@ -16,6 +16,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Link } from "react-router-dom";
+import AuthAPI from '../services/AuthAPI';
 
 
 const solutions = [
@@ -32,11 +33,9 @@ const solutions = [
     icon: CursorArrowRaysIcon,
   }
 ]
-
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+  const handleClick = () => {
+    AuthAPI.logout();
+  }
 
 export default function Example() {
   return (
@@ -77,6 +76,12 @@ export default function Example() {
             <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
               S'inscrire
             </a>
+            <button
+              onClick={handleClick}
+              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            >
+              Déconnexion
+              </button>
             <Link to={"login"}
               className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
@@ -125,7 +130,6 @@ export default function Example() {
                       <item.icon className="h-6 w-6 flex-shrink-0 text-indigo-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                       </Link>
-                
                   ))}
                 </nav>
               </div>
