@@ -9,8 +9,8 @@ function Pagination({currentPage, itemsPerPage, length, onPageChange}) {
     }
     
   return (
-    <nav aria-label="Page navigation example ">
-    <ul className="pagination justify-content-end pr-5">
+    <nav aria-label="Page navigation example mb-5">
+    <ul className="pagination justify-content-center pr-5">
       <li className={"page-item" + (currentPage === 1 && " disabled")}>
         <a onClick={() => onPageChange(currentPage -1)} className="page-link" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>

@@ -15,51 +15,24 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Link } from "react-router-dom";
+
 
 const solutions = [
   {
     name: 'Clients',
     description: 'Get a better understanding of where your traffic is coming from.',
-    href: '#',
+    href: 'customer',
     icon: ChartBarIcon,
   },
   {
     name: 'Factures',
     description: 'Speak directly to your customers in a more meaningful way.',
-    href: '#',
+    href: 'invoice',
     icon: CursorArrowRaysIcon,
   }
 ]
-const callsToAction = [
-  { name: 'Watch Demo', href: '#', icon: PlayIcon },
-  { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-]
-const resources = [
-  {
-    name: 'Help Center',
-    description: 'Get all of your questions answered in our forums or contact support.',
-    href: '#',
-    icon: LifebuoyIcon,
-  },
-  {
-    name: 'Guides',
-    description: 'Learn how to maximize our platform to get the most out of it.',
-    href: '#',
-    icon: BookmarkSquareIcon,
-  },
-  {
-    name: 'Events',
-    description: 'See what meet-ups and other events we might be planning near you.',
-    href: '#',
-    icon: CalendarIcon,
-  },
-  { name: 'Security', description: 'Understand how we take your privacy seriously.', href: '#', icon: ShieldCheckIcon },
-]
-const recentPosts = [
-  { id: 1, name: 'Boost your conversion rate', href: '#' },
-  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
-  { id: 3, name: 'Improve your customer experience', href: '#' },
-]
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -89,14 +62,16 @@ export default function Example() {
           </div>
           <Popover.Group as="nav" className="hidden space-x-10 md:flex">
             
-
+          <Link to={"customer"}>
             <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
               Client
             </a>
+            </Link>
+            <Link to={"invoice"}>
             <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
               Facture
             </a>
-
+            </Link>
           </Popover.Group>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
@@ -142,6 +117,7 @@ export default function Example() {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {solutions.map((item) => (
+                       <Link to={item.href}>
                     <a
                       key={item.name}
                       href={item.href}
@@ -150,6 +126,7 @@ export default function Example() {
                       <item.icon className="h-6 w-6 flex-shrink-0 text-indigo-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                     </a>
+                    </Link>
                   ))}
                 </nav>
               </div>

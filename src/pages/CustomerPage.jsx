@@ -8,6 +8,7 @@ export default function CustomerPage() {
   const [customers, setCustomers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchCustomers = async () => {
     try {
@@ -58,7 +59,7 @@ export default function CustomerPage() {
 
   const start = currentPage * itemsPerPage - itemsPerPage
   const paginatedCustomers = filteredCustomers.slice(start, start + itemsPerPage);
-
+ 
   return (
     <>
       <h1 class="h1">Liste des clients</h1>
