@@ -10,7 +10,7 @@ import {useState} from "react";
 
 AuthAPI.setup();
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
 
   return (
 
