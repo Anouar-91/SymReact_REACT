@@ -33,11 +33,13 @@ const solutions = [
     icon: CursorArrowRaysIcon,
   }
 ]
+
+
+export default function Navbar({ isAuthenticated, onLogout }) {
   const handleClick = () => {
     AuthAPI.logout();
+    onLogout(false)
   }
-
-export default function Example() {
   return (
     <Popover className="relative bg-white">
       <div className="mx-auto max-w-10xl px-4 sm:px-6">
@@ -60,33 +62,39 @@ export default function Example() {
             </Popover.Button>
           </div>
           <Popover.Group as="nav" className="hidden space-x-10 md:flex">
-            
-       
-          <Link to={"customer"} className="text-base font-medium text-gray-500 hover:text-gray-900">
+
+
+            <Link to={"customer"} className="text-base font-medium text-gray-500 hover:text-gray-900">
               Client
-              </Link>
-      
-            
+            </Link>
+
+
             <Link to={"invoice"} className="text-base font-medium text-gray-500 hover:text-gray-900">
               Facture
-              </Link>
-         
+            </Link>
+
           </Popover.Group>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-              S'inscrire
-            </a>
-            <button
-              onClick={handleClick}
-              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-            >
-              Déconnexion
+            {!isAuthenticated ? (
+              <>
+                <a href="#" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                  S'inscrire
+                </a>
+
+                <Link to={"login"}
+                  className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                >
+                  Connexion
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleClick}
+                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+              >
+                Déconnexion
               </button>
-            <Link to={"login"}
-              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-            >
-              Connexion
-              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -121,15 +129,15 @@ export default function Example() {
               <div className="mt-6">
                 <nav className="grid gap-y-8">
                   {solutions.map((item) => (
-                   
-                   <Link to={item.href}
+
+                    <Link to={item.href}
                       key={item.name}
                       href={item.href}
                       className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
                     >
                       <item.icon className="h-6 w-6 flex-shrink-0 text-indigo-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                      </Link>
+                    </Link>
                   ))}
                 </nav>
               </div>

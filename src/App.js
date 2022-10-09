@@ -5,18 +5,22 @@ import CustomerPage from './pages/CustomerPage';
 import InvoicePage from "./pages/InvoicePage";
 import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
+import {useState} from "react";
+
 
 AuthAPI.setup();
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
   return (
 
     <BrowserRouter>
-      <Navbar />
+            <Navbar isAuthenticated={isAuthenticated}   onLogout={setIsAuthenticated}  />
       <div className="pt-10 pl-10">
         <Routes>
           <Route path="/customer" element={<CustomerPage />} />
           <Route path="/invoice" element={<InvoicePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage onLogin={setIsAuthenticated} />} />
 
 
           <Route path="/" element={<HomePage />} />

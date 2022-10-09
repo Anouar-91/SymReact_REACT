@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import AuthAPI from '../services/AuthAPI'
 
-function LoginPage() {
+function LoginPage({onLogin}) {
   const [error, setError] = useState("")
   const [credentials, setCredentials] = useState({
     username: "",
@@ -24,6 +24,7 @@ function LoginPage() {
     try {
         const token = await AuthAPI.authenticate(credentials)
         setError("")
+        onLogin(true)
         console.log(token)
     } catch (error) {
         console.log(error.response.data)
