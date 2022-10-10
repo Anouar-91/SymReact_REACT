@@ -1,34 +1,27 @@
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import { Routes, Route, BrowserRouter , Navigate, Outlet} from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import CustomerPage from './pages/CustomerPage';
 import InvoicePage from "./pages/InvoicePage";
 import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
-import { useState, useContext } from "react";
+import { useState } from "react";
 import AuthContext from './contexts/AuthContext';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 
 AuthAPI.setup();
 
-const ProtectedRoute = ({  redirectPath = '/login' }) => {
-  const {isAuthenticated} = useContext(AuthContext);
-  if (!isAuthenticated) {
-      return <Navigate to={redirectPath} replace />;
-  }
-  return <Outlet />;
-};
-
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
-  const contextValue = {
-    isAuthenticated: isAuthenticated,
-    setIsAuthenticated: setIsAuthenticated
-};
+
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={{
+      isAuthenticated: isAuthenticated,
+      setIsAuthenticated: setIsAuthenticated
+  }}>
 
     <BrowserRouter>
       <Navbar />
