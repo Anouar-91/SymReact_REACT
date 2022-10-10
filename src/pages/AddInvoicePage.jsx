@@ -4,11 +4,9 @@ import Field from '../components/forms/field';
 import Select from '../components/forms/select';
 import CustomersAPI from "../services/CustomersAPI";
 import InvoicesAPI from "../services/InvoicesAPI";
-import axios from "axios";
-
 
 function AddInvoicePage() {
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     const [editing, setEditing] = useState(true);
     const [invoice, setInvoice] = useState({
         amount: '',
@@ -26,7 +24,7 @@ function AddInvoicePage() {
 
     useEffect(() => {
         fetchCustomers()
-       
+
     }, [])
 
     useEffect(() => {
@@ -41,15 +39,12 @@ function AddInvoicePage() {
     const fetchInvoice = async () => {
         try {
             const data = await InvoicesAPI.find(id);
-            console.log(data.amount)
-            setInvoice({...invoice, amount:data.amount, status:data.status, customer: data.customer.id})
+            setInvoice({ ...invoice, amount: data.amount, status: data.status, customer: data.customer.id })
         } catch (error) {
             console.log(error)
+            navigate("/invoice")
         }
     }
-
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.currentTarget;
@@ -59,38 +54,32 @@ function AddInvoicePage() {
         })
     }
 
-
-
-    const fetchCustomers = async() => {
+    const fetchCustomers = async () => {
         try {
             const customers = await CustomersAPI.findAll()
             setCustomers(customers)
-            if(customers.length > 0){
-                setInvoice({ 
+            if (customers.length > 0) {
+                setInvoice({
                     ...invoice,
                     customer: customers[0].id
                 })
             }
-
         } catch (error) {
             console.log(error.response)
+            navigate("/invoice")
         }
-
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        if(!editing){
-            const data = await axios.post("http://127.0.0.1:8000/api/invoices", 
-            {...invoice, customer: `/api/customers/${invoice.customer}`})
-            .then(response => response.data);
-            navigate('/invoice')
-        }else{
-            const response = await axios.put('http://127.0.0.1:8000/api/invoices/' + id, 
-            {...invoice, customer: `/api/customers/${invoice.customer}`})
-            console.log(response);
-        }
+            if (!editing) {
+                const data = await InvoicesAPI.create(invoice)
+                navigate('/invoice')
+            } else {
+                const response = await InvoicesAPI.update(id, invoice)
+                console.log(response);
+            }
 
         } catch (error) {
             console.log(error)
@@ -101,11 +90,9 @@ function AddInvoicePage() {
             setErrors(apiErrors)
         }
     }
-
-
     return (
         <>
-                    {editing ? (
+            {editing ? (
                 <h1 className="mb-5">Modification d'une facture</h1>
             ) : (
                 <h1>Création d'une facture</h1>
@@ -127,9 +114,9 @@ function AddInvoicePage() {
                     value={invoice.customer}
                     error={errors.customer}
                     onChange={handleChange}
-                    >
+                >
                     {customers.map((customer) => {
-                        return  <option key={customer.id} value={customer.id}>{customer.firstname} {customer.lastame}</option>
+                        return <option key={customer.id} value={customer.id}>{customer.firstname} {customer.lastame}</option>
                     })}
                 </Select>
 
@@ -139,20 +126,15 @@ function AddInvoicePage() {
                     value={invoice.status}
                     error={errors.status}
                     onChange={handleChange}
-                    >
+                >
                     <option value="SENT">Envoyée</option>
                     <option value="PAID">Payée</option>
                     <option value="CANCELLED">Annulée</option>
                 </Select>
                 <div className="form-group mt-3">
-                <Link to="/invoice" className="btn btn-link">Retour au factures</Link>
-
-                <button type="submit" className="btn btn-success">Enregistrer</button>
-
+                    <Link to="/invoice" className="btn btn-link">Retour au factures</Link>
+                    <button type="submit" className="btn btn-success">Enregistrer</button>
                 </div>
-
-
-
             </form>
 
         </>
