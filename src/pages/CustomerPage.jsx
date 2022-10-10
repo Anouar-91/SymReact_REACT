@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 
 import CustomersAPI from '../services/CustomersAPI'
@@ -62,7 +63,10 @@ export default function CustomerPage() {
  
   return (
     <>
-      <h1 class="h1">Liste des clients</h1>
+      <div className="d-flex justify-content-between align-items-center">
+      <h1>Liste des clients</h1>
+      <Link to="/customer/new" className="btn btn-primary">Créer un client</Link>
+      </div>
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>

@@ -8,6 +8,8 @@ import AuthAPI from './services/AuthAPI';
 import { useState } from "react";
 import AuthContext from './contexts/AuthContext';
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddCustomerPage from './pages/AddCustomerPage';
+
 
 
 
@@ -25,9 +27,10 @@ function App() {
 
     <BrowserRouter>
       <Navbar />
-      <div className="pt-10 pl-10">
+      <div className="pt-10 pl-10 pr-10">
         <Routes>
           <Route element={<ProtectedRoute  />}>
+          <Route path="/customer/new" element={<AddCustomerPage />} />
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/invoice" element={<InvoicePage />} />
           </Route>
