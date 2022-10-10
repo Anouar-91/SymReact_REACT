@@ -106,10 +106,9 @@ export default function InvoicePage() {
 
               <td >{invoice.amount.toLocaleString()}€</td>
               <td>
-              <button
-                  onClick={() => handleDelete(invoice.id)}
+              <Link to={"/invoice/" +invoice.id}
                   className="btn btn-sm btn-primary">Editer
-                </button>  
+                  </Link> 
                 &ensp;
                 <button
                   onClick={() => handleDelete(invoice.id)}
