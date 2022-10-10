@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Field from '../components/forms/field';
 import Select from '../components/forms/select';
-import CustomersAPI from "../services/CustomersAPI"
+import CustomersAPI from "../services/CustomersAPI";
+import axios from "axios";
+
 
 function AddInvoicePage() {
-
+    const navigate= useNavigate();
     const [invoice, setInvoice] = useState({
         amount: '',
         customer: '',
-        status: ''
+        status: 'SENT'
     })
 
     const [errors, setErrors] = useState({
@@ -35,19 +37,45 @@ function AddInvoicePage() {
         try {
             const customers = await CustomersAPI.findAll()
             setCustomers(customers)
+            if(customers.length > 0){
+                setInvoice({ 
+                    ...invoice,
+                    customer: customers[0].id
+                })
+            }
+
         } catch (error) {
             console.log(error.response)
         }
 
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            console.log(invoice)
+            const data = await axios.post("http://127.0.0.1:8000/api/invoices", 
+            {...invoice, customer: `/api/customers/${invoice.customer}`})
+            .then(response => response.data);
+            navigate('/invoice')
+        } catch (error) {
+            console.log(error)
+            const apiErrors = {}
+            error.response.data.violations.forEach((violation) => {
+                apiErrors[violation.propertyPath] = violation.message;
+            })
+            setErrors(apiErrors)
+        }
+    }
+
 
     return (
         <>
             <h1>Création d'une facture</h1>
-            <form action="">
+            <form onSubmit={handleSubmit}>
 
                 <Field
+                    required={true}
                     name="amount"
                     type="number"
                     placeholder="Montant de la facture"
@@ -75,7 +103,7 @@ function AddInvoicePage() {
                     error={errors.status}
                     onChange={handleChange}
                     >
-                    <option value="SEND">Envoyée</option>
+                    <option value="SENT">Envoyée</option>
                     <option value="PAID">Payée</option>
                     <option value="CANCELLED">Annulée</option>
                 </Select>
