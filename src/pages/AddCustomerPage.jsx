@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useMatch, useParams } from 'react-router-dom';
 import Field from "../components/forms/field";
 import axios from "axios";
 
-function AddCustomerPage() {
+function AddCustomerPage(props) {
+    const [editing, setEditing] = useState(true);
+    let { id } = useParams();
+
+    const fetchCustomer = async (id) => {
+        try {
+            const data = await axios.get(`http://127.0.0.1:8000/api/customers/${id}`).then(response => response.data);
+            const { firstname, lastname, email, company } = data;
+            setCustomer({ firstname, lastname, email, company });
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
+
+    useEffect(() => {
+        if (id === "new") {
+            setEditing(false)
+        } else {
+            const data = fetchCustomer(id)
+        }
+    }, [])
+
     const [customer, setCustomer] = useState({
         lastname: "",
         firstname: "",
@@ -29,9 +50,15 @@ function AddCustomerPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
-            console.log(response.data)
-            setError=({})
+            if (editing) {
+                const response = await axios.put("http://127.0.0.1:8000/api/customers/" + id, customer)
+                console.log(response)
+            } else {
+                const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
+                console.log(response.data)
+                setError = ({})
+            }
+
         } catch (error) {
             const apiErrors = {}
             error.response.data.violations.forEach((violation) => {
@@ -43,7 +70,11 @@ function AddCustomerPage() {
 
     return (
         <>
-            <h1 className="mb-5">Création d'un client</h1>
+            {editing ? (
+                <h1 className="mb-5">Modification d'un client</h1>
+            ) : (
+                <h1 className="mb-5">Création d'un client</h1>
+            )}
             <form onSubmit={handleSubmit}>
                 <Field value={customer.lastname}
                     onChange={handleChange}
@@ -70,7 +101,7 @@ function AddCustomerPage() {
                     type="email"
 
                 ></Field>
-                <Field value={customer.company}
+                <Field value={customer.company ? customer.company : ""}
                     error={error.company}
                     onChange={handleChange}
                     name="company"
