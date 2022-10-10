@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useMatch, useParams } from 'react-router-dom';
+import { Link,  useParams, useNavigate } from 'react-router-dom';
 import Field from "../components/forms/field";
 import axios from "axios";
+import CustomersAPI from "../services/CustomersAPI";
 
 function AddCustomerPage(props) {
     const [editing, setEditing] = useState(true);
+    const navigate = useNavigate();
+
     let { id } = useParams();
 
     const fetchCustomer = async (id) => {
         try {
-            const data = await axios.get(`http://127.0.0.1:8000/api/customers/${id}`).then(response => response.data);
-            const { firstname, lastname, email, company } = data;
+            const { firstname, lastname, email, company } =await CustomersAPI.find(id);
             setCustomer({ firstname, lastname, email, company });
         } catch (error) {
             console.log(error.response)
@@ -56,8 +58,10 @@ function AddCustomerPage(props) {
             } else {
                 const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
                 console.log(response.data)
-                setError = ({})
+                setError({})
+                navigate("/customer");
             }
+            navigate("/customer");
 
         } catch (error) {
             const apiErrors = {}
@@ -110,9 +114,7 @@ function AddCustomerPage(props) {
                 ></Field>
                 <div className="form-group mt-3">
                     <Link to="/customer" className="btn btn-link">Retour à la liste</Link>
-                    <button type="submit" 
-                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                >Enregistrer</button>
+                    <button type="submit" className="btn btn-success">Enregistrer</button>
                 </div>
             </form>
         </>
