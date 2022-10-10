@@ -1,25 +1,12 @@
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition } from '@headlessui/react';
 import {
-  ArrowPathIcon,
-  Bars3Icon,
-  BookmarkSquareIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  CursorArrowRaysIcon,
-  LifebuoyIcon,
-  PhoneIcon,
-  PlayIcon,
-  ShieldCheckIcon,
-  Squares2X2Icon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Link } from "react-router-dom";
+  Bars3Icon, ChartBarIcon,
+  CursorArrowRaysIcon, XMarkIcon
+} from '@heroicons/react/24/outline';
+import { Fragment, useContext } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from '../contexts/AuthContext';
 import AuthAPI from '../services/AuthAPI';
-import { useNavigate } from "react-router-dom";
-
-
 
 const solutions = [
   {
@@ -37,10 +24,12 @@ const solutions = [
 ]
 
 
-export default function Navbar({ isAuthenticated, onLogout }) {
+export default function Navbar() {
+
+  const { isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
   const handleClick = () => {
     AuthAPI.logout();
-    onLogout(false)
+    setIsAuthenticated(false)
     navigate("/login")
   }
 

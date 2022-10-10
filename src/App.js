@@ -5,12 +5,15 @@ import CustomerPage from './pages/CustomerPage';
 import InvoicePage from "./pages/InvoicePage";
 import LoginPage from './pages/LoginPage';
 import AuthAPI from './services/AuthAPI';
-import { useState } from "react";
+import { useState, useContext } from "react";
+import AuthContext from './contexts/AuthContext';
+
 
 
 AuthAPI.setup();
 
-const ProtectedRoute = ({ isAuthenticated, redirectPath = '/login' }) => {
+const ProtectedRoute = ({  redirectPath = '/login' }) => {
+  const {isAuthenticated} = useContext(AuthContext);
   if (!isAuthenticated) {
       return <Navigate to={redirectPath} replace />;
   }
@@ -20,18 +23,22 @@ const ProtectedRoute = ({ isAuthenticated, redirectPath = '/login' }) => {
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
-
+  const contextValue = {
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated
+};
   return (
+    <AuthContext.Provider value={contextValue}>
 
     <BrowserRouter>
-      <Navbar isAuthenticated={isAuthenticated} onLogout={setIsAuthenticated} />
+      <Navbar />
       <div className="pt-10 pl-10">
         <Routes>
-          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+          <Route element={<ProtectedRoute  />}>
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/invoice" element={<InvoicePage />} />
           </Route>
-          <Route path="/login" element={<LoginPage onLogin={setIsAuthenticated} />} />
+          <Route path="/login" element={<LoginPage />} />
 
 
           <Route path="/" element={<HomePage />} />
@@ -40,6 +47,8 @@ function App() {
 
       </div>
     </BrowserRouter>
+    </AuthContext.Provider>
+
   );
 }
 

@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import AuthAPI from '../services/AuthAPI';
 import { useNavigate } from "react-router-dom";
+import AuthContext from '../contexts/AuthContext';
 
 
 function LoginPage({onLogin}) {
+  const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
   const [error, setError] = useState("")
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ function LoginPage({onLogin}) {
     try {
         const token = await AuthAPI.authenticate(credentials)
         setError("")
-        onLogin(true)
+        setIsAuthenticated(true)
         navigate('/customer')
     } catch (error) {
         console.log(error.response.data)
