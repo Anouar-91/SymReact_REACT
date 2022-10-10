@@ -9,9 +9,7 @@ import { useState } from "react";
 import AuthContext from './contexts/AuthContext';
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddCustomerPage from './pages/AddCustomerPage';
-
-
-
+import AddInvoicePage from './pages/AddInvoicePage';
 
 AuthAPI.setup();
 
@@ -31,6 +29,8 @@ function App() {
         <Routes>
           <Route element={<ProtectedRoute  />}>
           <Route path="/customer/:id" element={<AddCustomerPage />} />
+          <Route path="/invoice/:id" element={<AddInvoicePage />} />
+
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/invoice" element={<InvoicePage />} />
           </Route>

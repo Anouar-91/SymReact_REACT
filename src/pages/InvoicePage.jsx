@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import InvoicesAPI from '../services/InvoicesAPI';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 export default function InvoicePage() {
 
@@ -76,7 +77,11 @@ export default function InvoicePage() {
 
   return (
     <>
-      <h1 class="h1">Liste des factures</h1>
+            <div className="d-flex justify-content-between align-items-center">
+        <h1>Liste des factures</h1>
+        <Link to="/invoice/new" className="btn btn-primary">Créer une facture</Link>
+      </div>
+
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>
