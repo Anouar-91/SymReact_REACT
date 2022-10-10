@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
-import AuthAPI from '../services/AuthAPI'
+import AuthAPI from '../services/AuthAPI';
+import { useNavigate } from "react-router-dom";
+
 
 function LoginPage({onLogin}) {
   const [error, setError] = useState("")
+  const navigate = useNavigate();
+
   const [credentials, setCredentials] = useState({
     username: "",
     password: ""
@@ -25,7 +29,7 @@ function LoginPage({onLogin}) {
         const token = await AuthAPI.authenticate(credentials)
         setError("")
         onLogin(true)
-        console.log(token)
+        navigate('/customer')
     } catch (error) {
         console.log(error.response.data)
         setError("Aucun compte ne correspond à ces identifiants !")

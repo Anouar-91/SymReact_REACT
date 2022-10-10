@@ -17,6 +17,8 @@ import {
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Link } from "react-router-dom";
 import AuthAPI from '../services/AuthAPI';
+import { useNavigate } from "react-router-dom";
+
 
 
 const solutions = [
@@ -39,7 +41,11 @@ export default function Navbar({ isAuthenticated, onLogout }) {
   const handleClick = () => {
     AuthAPI.logout();
     onLogout(false)
+    navigate("/login")
   }
+
+  const navigate = useNavigate();
+
   return (
     <Popover className="relative bg-white">
       <div className="mx-auto max-w-10xl px-4 sm:px-6">
