@@ -30,7 +30,7 @@ function App() {
       <div className="pt-10 pl-10 pr-10">
         <Routes>
           <Route element={<ProtectedRoute  />}>
-          <Route path="/customer/new" element={<AddCustomerPage />} />
+          <Route path="/customer/:id" element={<AddCustomerPage />} />
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/invoice" element={<InvoicePage />} />
           </Route>
