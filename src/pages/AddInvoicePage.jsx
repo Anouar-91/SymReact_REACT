@@ -1,25 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Field from '../components/forms/field';
 import Select from '../components/forms/select';
 import CustomersAPI from "../services/CustomersAPI";
+import InvoicesAPI from "../services/InvoicesAPI";
 import axios from "axios";
 
 
 function AddInvoicePage() {
     const navigate= useNavigate();
+    const [editing, setEditing] = useState(true);
     const [invoice, setInvoice] = useState({
         amount: '',
         customer: '',
         status: 'SENT'
     })
-
     const [errors, setErrors] = useState({
         amount: '',
         customer: '',
         status: ''
     })
     const [customers, setCustomers] = useState([])
+    let { id } = useParams();
+
+
+    useEffect(() => {
+        fetchCustomers()
+       
+    }, [])
+
+    useEffect(() => {
+        if (id === "new") {
+            setEditing(false)
+        } else {
+            const data = fetchInvoice()
+            console.log(invoice)
+        }
+    }, [id])
+
+    const fetchInvoice = async () => {
+        try {
+            const data = await InvoicesAPI.find(id);
+            console.log(data.amount)
+            setInvoice({...invoice, amount:data.amount, status:data.status, customer: data.customer.id})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+
     const handleChange = (e) => {
         const { name, value } = e.currentTarget;
         setInvoice({
@@ -28,10 +59,7 @@ function AddInvoicePage() {
         })
     }
 
-    useEffect(() => {
-        fetchCustomers()
-       
-    }, [])
+
 
     const fetchCustomers = async() => {
         try {
@@ -53,11 +81,17 @@ function AddInvoicePage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(invoice)
+        if(!editing){
             const data = await axios.post("http://127.0.0.1:8000/api/invoices", 
             {...invoice, customer: `/api/customers/${invoice.customer}`})
             .then(response => response.data);
             navigate('/invoice')
+        }else{
+            const response = await axios.put('http://127.0.0.1:8000/api/invoices/' + id, 
+            {...invoice, customer: `/api/customers/${invoice.customer}`})
+            console.log(response);
+        }
+
         } catch (error) {
             console.log(error)
             const apiErrors = {}
@@ -71,11 +105,14 @@ function AddInvoicePage() {
 
     return (
         <>
-            <h1>Création d'une facture</h1>
+                    {editing ? (
+                <h1 className="mb-5">Modification d'une facture</h1>
+            ) : (
+                <h1>Création d'une facture</h1>
+            )}
             <form onSubmit={handleSubmit}>
 
                 <Field
-                    required={true}
                     name="amount"
                     type="number"
                     placeholder="Montant de la facture"
