@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Field from '../components/forms/field';
 import UsersAPI from '../services/UsersAPI';
+import { toast } from 'react-toastify';
+
 function RegisterPage() {
     const navigate = useNavigate();
     const [user, setUser] = useState({
@@ -47,6 +49,7 @@ function RegisterPage() {
             })
             navigate('/login');
         } catch (error) {
+            toast.error('Une erreur est survenue')
             console.log(error)
             error.response.data.violations.forEach((violation) => {
                 apiErrors[violation.propertyPath] = violation.message;

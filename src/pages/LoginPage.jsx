@@ -3,7 +3,7 @@ import { LockClosedIcon } from '@heroicons/react/20/solid'
 import AuthAPI from '../services/AuthAPI';
 import { useNavigate } from "react-router-dom";
 import AuthContext from '../contexts/AuthContext';
-
+import { toast } from 'react-toastify';
 
 function LoginPage({onLogin}) {
   const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
@@ -33,6 +33,8 @@ function LoginPage({onLogin}) {
         setIsAuthenticated(true)
         navigate('/customer')
     } catch (error) {
+      toast.error('Une erreur est survenue')
+
         console.log(error.response.data)
         setError("Aucun compte ne correspond à ces identifiants !")
     }

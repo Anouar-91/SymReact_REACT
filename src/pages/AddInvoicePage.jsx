@@ -4,6 +4,8 @@ import Field from '../components/forms/field';
 import Select from '../components/forms/select';
 import CustomersAPI from "../services/CustomersAPI";
 import InvoicesAPI from "../services/InvoicesAPI";
+import { toast } from 'react-toastify';
+
 
 function AddInvoicePage() {
     const navigate = useNavigate();
@@ -41,6 +43,7 @@ function AddInvoicePage() {
             const data = await InvoicesAPI.find(id);
             setInvoice({ ...invoice, amount: data.amount, status: data.status, customer: data.customer.id })
         } catch (error) {
+            toast.error("Impossible de charger la facture")
             console.log(error)
             navigate("/invoice")
         }
@@ -65,6 +68,8 @@ function AddInvoicePage() {
                 })
             }
         } catch (error) {
+            toast.error("Impossible de charger la liste des clients")
+
             console.log(error.response)
             navigate("/invoice")
         }
@@ -81,7 +86,10 @@ function AddInvoicePage() {
                 console.log(response);
             }
 
-        } catch (error) {
+            toast.success("Enregistré avec succès")
+        } catch (error) {            
+            toast.error("Une erreur est survenue")
+
             console.log(error)
             const apiErrors = {}
             error.response.data.violations.forEach((violation) => {

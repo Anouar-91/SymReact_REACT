@@ -11,6 +11,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AddCustomerPage from './pages/AddCustomerPage';
 import AddInvoicePage from './pages/AddInvoicePage';
 import RegisterPage from './pages/RegisterPage';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 AuthAPI.setup();
 
@@ -43,6 +45,8 @@ function App() {
 
       </div>
     </BrowserRouter>
+    <ToastContainer position="top-center" />
+
     </AuthContext.Provider>
 
   );

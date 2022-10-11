@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
-
+import { toast } from 'react-toastify';
 import CustomersAPI from '../services/CustomersAPI'
 
 export default function CustomerPage() {
@@ -16,6 +16,7 @@ export default function CustomerPage() {
       const data = await CustomersAPI.findAll();
       setCustomers(data);
     } catch (error) {
+      toast.error("Une erreur est survenue lors du chargement des clients")
       console.log(error.response)
     }
   }
@@ -31,6 +32,7 @@ export default function CustomerPage() {
       await CustomersAPI.delete(id);
       console.log("ok")
     }catch(error){
+      toast.error("Une erreur est survenue")
       setCustomers(copyCustomers);
       console.log(error.response)
     }

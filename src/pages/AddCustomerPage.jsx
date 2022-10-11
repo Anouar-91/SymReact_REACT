@@ -3,6 +3,8 @@ import { Link,  useParams, useNavigate } from 'react-router-dom';
 import Field from "../components/forms/field";
 import axios from "axios";
 import CustomersAPI from "../services/CustomersAPI";
+import { toast } from 'react-toastify';
+
 
 function AddCustomerPage(props) {
     const [editing, setEditing] = useState(true);
@@ -15,6 +17,8 @@ function AddCustomerPage(props) {
             const { firstname, lastname, email, company } =await CustomersAPI.find(id);
             setCustomer({ firstname, lastname, email, company });
         } catch (error) {
+            toast.error("Une erreur est survenue lors du chargement du client")
+
             console.log(error.response)
         }
     }
@@ -61,9 +65,12 @@ function AddCustomerPage(props) {
                 setError({})
                 navigate("/customer");
             }
+            toast.success("Enregistré avec succès")
+
             navigate("/customer");
 
         } catch (error) {
+            toast.error('Une erreur est survenue')
             const apiErrors = {}
             error.response.data.violations.forEach((violation) => {
                 apiErrors[violation.propertyPath] = violation.message;
