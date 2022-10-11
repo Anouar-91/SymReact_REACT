@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import { toast } from 'react-toastify';
-import CustomersAPI from '../services/CustomersAPI'
+import CustomersAPI from '../services/CustomersAPI';
+import { ThreeDots } from 'react-loader-spinner'
+
 
 export default function CustomerPage() {
 
@@ -15,6 +17,7 @@ export default function CustomerPage() {
     try {
       const data = await CustomersAPI.findAll();
       setCustomers(data);
+      setLoading(false)
     } catch (error) {
       toast.error("Une erreur est survenue lors du chargement des clients")
       console.log(error.response)
@@ -72,6 +75,7 @@ export default function CustomerPage() {
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
       </div>
+      {!loading  ?(
       <table className="table table-hover table-responsive">
         <thead>
           <tr>
@@ -105,6 +109,21 @@ export default function CustomerPage() {
 
         </tbody>
       </table>
+      ):(
+          <div className="text-center">
+          <ThreeDots 
+          height="80" 
+          width="80" 
+          radius="9"
+          color="#0d6efd" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+          wrapperClassName=""
+          visible={true}
+           />
+          </div>
+
+        )}
       <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={filteredCustomers.length} onPageChange={handleChangePage} />
 
     </>

@@ -5,11 +5,14 @@ import Select from '../components/forms/select';
 import CustomersAPI from "../services/CustomersAPI";
 import InvoicesAPI from "../services/InvoicesAPI";
 import { toast } from 'react-toastify';
+import { ThreeDots } from 'react-loader-spinner'
 
 
 function AddInvoicePage() {
     const navigate = useNavigate();
     const [editing, setEditing] = useState(true);
+    const [loading, setLoading] = useState(true);
+
     const [invoice, setInvoice] = useState({
         amount: '',
         customer: '',
@@ -26,7 +29,6 @@ function AddInvoicePage() {
 
     useEffect(() => {
         fetchCustomers()
-
     }, [])
 
     useEffect(() => {
@@ -42,10 +44,15 @@ function AddInvoicePage() {
         try {
             const data = await InvoicesAPI.find(id);
             setInvoice({ ...invoice, amount: data.amount, status: data.status, customer: data.customer.id })
+            if(id!== "new"){
+                setLoading(false)
+            }
         } catch (error) {
             toast.error("Impossible de charger la facture")
             console.log(error)
             navigate("/invoice")
+            setLoading(false)
+
         }
     }
 
@@ -67,15 +74,21 @@ function AddInvoicePage() {
                     customer: customers[0].id
                 })
             }
+            if(id === "new"){
+                setLoading(false)
+            }
+
         } catch (error) {
             toast.error("Impossible de charger la liste des clients")
-
+            setLoading(false)
             console.log(error.response)
             navigate("/invoice")
         }
     }
 
     const handleSubmit = async (e) => {
+        setLoading(true)
+
         e.preventDefault();
         try {
             if (!editing) {
@@ -85,6 +98,7 @@ function AddInvoicePage() {
                 const response = await InvoicesAPI.update(id, invoice)
                 console.log(response);
             }
+            setLoading(false)
 
             toast.success("Enregistré avec succès")
         } catch (error) {            
@@ -96,6 +110,8 @@ function AddInvoicePage() {
                 apiErrors[violation.propertyPath] = violation.message;
             })
             setErrors(apiErrors)
+            setLoading(false)
+
         }
     }
     return (
@@ -105,6 +121,7 @@ function AddInvoicePage() {
             ) : (
                 <h1>Création d'une facture</h1>
             )}
+             {!loading  ?(
             <form onSubmit={handleSubmit}>
 
                 <Field
@@ -144,6 +161,21 @@ function AddInvoicePage() {
                     <button type="submit" className="btn btn-success">Enregistrer</button>
                 </div>
             </form>
+            ):(
+          <div className="text-center">
+          <ThreeDots 
+          height="80" 
+          width="80" 
+          radius="9"
+          color="#0d6efd" 
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+          wrapperClassName=""
+          visible={true}
+           />
+          </div>
+
+        )}
 
         </>
     )

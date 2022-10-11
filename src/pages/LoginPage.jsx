@@ -4,11 +4,15 @@ import AuthAPI from '../services/AuthAPI';
 import { useNavigate } from "react-router-dom";
 import AuthContext from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
+import { ThreeDots } from 'react-loader-spinner'
+
 
 function LoginPage({onLogin}) {
   const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
   const [error, setError] = useState("")
   const navigate = useNavigate();
+  const [loading, setLoading] =useState(false)
+
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -26,12 +30,16 @@ function LoginPage({onLogin}) {
   }
 
   const handleSubmit = async (e) => {
+    setLoading(true)
+
     e.preventDefault();
     try {
         const token = await AuthAPI.authenticate(credentials)
         setError("")
         setIsAuthenticated(true)
+        setLoading(false)
         navigate('/customer')
+        
     } catch (error) {
       toast.error('Une erreur est survenue')
 
@@ -54,6 +62,7 @@ function LoginPage({onLogin}) {
             </h2>
 
           </div>
+          {!loading  ?(
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
@@ -106,6 +115,18 @@ function LoginPage({onLogin}) {
               </button>
             </div>
           </form>
+          ):(
+        <ThreeDots 
+        height="80" 
+        width="80" 
+        radius="9"
+        color="#0d6efd" 
+        ariaLabel="three-dots-loading"
+        wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
+        wrapperClassName=""
+        visible={true}
+         />
+      )}
         </div>
       </div>
     </>
