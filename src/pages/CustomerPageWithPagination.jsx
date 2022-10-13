@@ -11,7 +11,7 @@ export default function CustomerPageWithPagination() {
 
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/customers?pagination=true&itemsPerPage=${itemsPerPage}&page=${currentPage}`)
+    axios.get(`process.env.REACT_APP_API_URL + "customers?pagination=true&itemsPerPage=${itemsPerPage}&page=${currentPage}`)
       .then((response) => {
         setTotalItems(response.data["hydra:totalItems"]);
         setCustomers(response.data["hydra:member"]);
@@ -22,7 +22,7 @@ export default function CustomerPageWithPagination() {
   const handleDelete = (id) => {
     const copyCustomers = [...customers];
     setCustomers(customers.filter(customer => customer.id !== id))
-    axios.delete('http://127.0.0.1:8000/api/customers/' + id)
+    axios.delete('process.env.REACT_APP_API_URL + "customers/' + id)
       .then((response) => {
         console.log(response)
       })

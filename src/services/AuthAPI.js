@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 
 function authenticate(credentials) {
     return axios
-        .post("http://127.0.0.1:8000/api/login_check", credentials)
+        .post(process.env.REACT_APP_API_URL + "login_check", credentials)
         .then(response => {
             // je stock mon token dans le local storage
             const token = response.data.token;
