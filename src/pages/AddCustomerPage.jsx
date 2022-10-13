@@ -63,10 +63,10 @@ function AddCustomerPage(props) {
         setLoading(true)
         try {
             if (editing) {
-                const response = await axios.put("http://127.0.0.1:8000/api/customers/" + id, customer)
+                const response = await CustomersAPI.update(id, customer)
                 console.log(response)
             } else {
-                const response = await axios.post("http://127.0.0.1:8000/api/customers", customer)
+                const response = await CustomersAPI.create(customer)
                 console.log(response.data)
                 setError({})
                 navigate("/customer");
