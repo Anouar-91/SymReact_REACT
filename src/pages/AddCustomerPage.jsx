@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link,  useParams, useNavigate } from 'react-router-dom';
 import Field from "../components/forms/field";
-import axios from "axios";
 import CustomersAPI from "../services/CustomersAPI";
 import { toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner'
