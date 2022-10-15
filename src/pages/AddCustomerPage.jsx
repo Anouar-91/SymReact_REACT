@@ -102,7 +102,7 @@ function AddCustomerPage(props) {
             {!loading ? (
                 <div className="container">
                     <div className="row justify-content-center">
-                        <div className="col-md-7">
+                        <div className="col-12 col-md-7">
                         <div className="card p-4">
                     <form onSubmit={handleSubmit}>
                         <Field value={customer.lastname}
