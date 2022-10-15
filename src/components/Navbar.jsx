@@ -7,6 +7,7 @@ import { Fragment, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from '../contexts/AuthContext';
 import AuthAPI from '../services/AuthAPI';
+import BtnPrimary from './BtnPrimary';
 
 const solutions = [
   {
@@ -26,7 +27,7 @@ const solutions = [
 
 export default function Navbar() {
 
-  const { isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const handleClick = () => {
     AuthAPI.logout();
     setIsAuthenticated(false)
@@ -76,19 +77,11 @@ export default function Navbar() {
                   S'inscrire
                 </Link>
 
-                <Link to={"login"}
-                  className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                >
-                  Connexion
-                </Link>
+
+                <BtnPrimary to="login" content="Connexion" />
               </>
             ) : (
-              <button
-                onClick={handleClick}
-                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-              >
-                Déconnexion
-              </button>
+              <BtnPrimary handleClick={handleClick} content="Déconnexion" />
             )}
           </div>
         </div>
@@ -103,7 +96,7 @@ export default function Navbar() {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Popover.Panel focus className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden">
+        <Popover.Panel focus className="absolute inset-x-0 top-0 nav-responsive origin-top-right transform p-2 transition md:hidden">
           <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
@@ -130,10 +123,22 @@ export default function Navbar() {
                       href={item.href}
                       className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
                     >
-                      <item.icon className="h-6 w-6 flex-shrink-0 text-indigo-600" aria-hidden="true" />
                       <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
                     </Link>
                   ))}
+                  {!isAuthenticated ? (
+                    <>
+                      <Link to="/register"  className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50" >
+                      <span className="ml-3 text-base font-medium text-gray-900"> S'inscrire</span>
+                       
+                      </Link>
+
+
+                      <BtnPrimary to="login" content="Connexion" />
+                    </>
+                  ) : (
+                    <BtnPrimary handleClick={handleClick} content="Déconnexion" />
+                  )}
                 </nav>
               </div>
             </div>

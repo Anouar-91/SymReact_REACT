@@ -6,6 +6,7 @@ import CustomersAPI from "../services/CustomersAPI";
 import InvoicesAPI from "../services/InvoicesAPI";
 import { toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner'
+import BtnSubmit from '../components/BtnSubmit';
 
 
 function AddInvoicePage() {
@@ -44,7 +45,7 @@ function AddInvoicePage() {
         try {
             const data = await InvoicesAPI.find(id);
             setInvoice({ ...invoice, amount: data.amount, status: data.status, customer: data.customer.id })
-            if(id!== "new"){
+            if (id !== "new") {
                 setLoading(false)
             }
         } catch (error) {
@@ -74,7 +75,7 @@ function AddInvoicePage() {
                     customer: customers[0].id
                 })
             }
-            if(id === "new"){
+            if (id === "new") {
                 setLoading(false)
             }
 
@@ -101,7 +102,7 @@ function AddInvoicePage() {
             setLoading(false)
 
             toast.success("Enregistré avec succès")
-        } catch (error) {            
+        } catch (error) {
             toast.error("Une erreur est survenue")
 
             console.log(error)
@@ -116,66 +117,78 @@ function AddInvoicePage() {
     }
     return (
         <>
-            {editing ? (
-                <h1 className="mb-5">Modification d'une facture</h1>
+        <div className="text-center">
+        {editing ? (
+                <h1 className="mb-5 h1">Modification d'une facture</h1>
             ) : (
-                <h1>Création d'une facture</h1>
+                <h1 className="mb-5 h1">Création d'une facture</h1>
             )}
-             {!loading  ?(
-            <form onSubmit={handleSubmit}>
+        </div>
 
-                <Field
-                    name="amount"
-                    type="number"
-                    placeholder="Montant de la facture"
-                    label="Montant"
-                    onChange={handleChange}
-                    value={invoice.amount}
-                />
+            {!loading ? (
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-md-7">
+                            <div className="card p-4">
+                                <form onSubmit={handleSubmit}>
 
-                <Select
-                    name="customer"
-                    label="Client"
-                    value={invoice.customer}
-                    error={errors.customer}
-                    onChange={handleChange}
-                >
-                    {customers.map((customer) => {
-                        return <option key={customer.id} value={customer.id}>{customer.firstname} {customer.lastame}</option>
-                    })}
-                </Select>
+                                    <Field
+                                        name="amount"
+                                        type="number"
+                                        placeholder="Montant de la facture"
+                                        label="Montant"
+                                        onChange={handleChange}
+                                        value={invoice.amount}
+                                    />
 
-                <Select
-                    name="status"
-                    label="Statut"
-                    value={invoice.status}
-                    error={errors.status}
-                    onChange={handleChange}
-                >
-                    <option value="SENT">Envoyée</option>
-                    <option value="PAID">Payée</option>
-                    <option value="CANCELLED">Annulée</option>
-                </Select>
-                <div className="form-group mt-3">
-                    <Link to="/invoice" className="btn btn-link">Retour au factures</Link>
-                    <button type="submit" className="btn btn-success">Enregistrer</button>
+                                    <Select
+                                        name="customer"
+                                        label="Client"
+                                        value={invoice.customer}
+                                        error={errors.customer}
+                                        onChange={handleChange}
+                                    >
+                                        {customers.map((customer) => {
+                                            return <option key={customer.id} value={customer.id}>{customer.firstname} {customer.lastame}</option>
+                                        })}
+                                    </Select>
+
+                                    <Select
+                                        name="status"
+                                        label="Statut"
+                                        value={invoice.status}
+                                        error={errors.status}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="SENT">Envoyée</option>
+                                        <option value="PAID">Payée</option>
+                                        <option value="CANCELLED">Annulée</option>
+                                    </Select>
+                                    <div className="form-group mt-3 text-center">
+                                        <Link to="/invoice" className="btn btn-link">Retour au factures</Link>
+                                        <BtnSubmit content="Enregister" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
-            ):(
-          <div className="text-center">
-          <ThreeDots 
-          height="80" 
-          width="80" 
-          radius="9"
-          color="#0d6efd" 
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{marginLeft:'50%', transform: 'translateX(-10%)'}}
-          wrapperClassName=""
-          visible={true}
-           />
-          </div>
 
-        )}
+            ) : (
+                <div className="text-center">
+                    <ThreeDots
+                        height="80"
+                        width="80"
+                        radius="9"
+                        color="#0d6efd"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{ marginLeft: '50%', transform: 'translateX(-10%)' }}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                </div>
+
+            )}
 
         </>
     )

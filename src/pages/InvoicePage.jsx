@@ -90,8 +90,8 @@ export default function InvoicePage() {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
-        <h1>Liste des factures</h1>
-        <Link to="/invoice/new" className="btn btn-primary">Créer une facture</Link>
+        <h1 className="h1">Liste des factures</h1>
+        <Link to="/invoice/new" className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Créer une facture</Link>
       </div>
 
       <div className="form-group mb-5 mt-5">

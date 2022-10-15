@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import { toast } from 'react-toastify';
 import CustomersAPI from '../services/CustomersAPI';
-import { ThreeDots } from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner';
+import BtnPrimary from '../components/BtnPrimary';
 
 
 export default function CustomerPage() {
@@ -69,8 +70,8 @@ export default function CustomerPage() {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
-      <h1>Liste des clients</h1>
-      <Link to="/customer/new" className="btn btn-primary">Créer un client</Link>
+      <h1 className="h1">Liste des clients</h1>
+      <BtnPrimary to="/customer/new" content="Créer un client" />
       </div>
       <div className="form-group mb-5 mt-5">
         <input type="text" placeholder="Rechercher..." value={search} onChange={handleSearch} className="form-control" />
