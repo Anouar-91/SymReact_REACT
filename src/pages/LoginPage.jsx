@@ -41,9 +41,8 @@ function LoginPage({onLogin}) {
         navigate('/customer')
         
     } catch (error) {
-      toast.error('Une erreur est survenue')
+      toast.error('Aucun compte ne correspond à ces identifiants !')
       setLoading(false)
-
         console.log(error.response.data)
         setError("Aucun compte ne correspond à ces identifiants !")
     }
