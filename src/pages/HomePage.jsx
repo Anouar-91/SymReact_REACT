@@ -18,7 +18,7 @@ export default function HomePage() {
             </div>
             <div className="col-md-4">
               <Link to="register" className="mt-3 ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-white px-5 py-2 text-base font-medium text-indigo-600 shadow-sm ">
-                Se connecter
+                S'inscrire
               </Link>
             </div>
           </div>
